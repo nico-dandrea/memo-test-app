@@ -3,7 +3,7 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import { ApolloWrapper } from "@/app/ApolloWrapper";
 import Box from "@/components/Box";
-import Link from "next/link";
+import HomeLink from "./HomeLink";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -20,8 +20,10 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={inter.className}>
-        <section className="flex h-screen bg-gradient-to-b from-yellow-200 to-yellow-300 justify-center items-center">
-          <Box className="w-2/4 bg-white p-8 rounded-lg shadow-lg flex text-pink-600">
+        <section className="flex h-screen bg-gradient-to-b from-yellow-200 to-amber-300 justify-center items-center">
+          <Box className=" bg-white p-8 rounded-lg shadow-lg text-pink-600">
+            <HomeLink className="text-center" title="Memo Test" subtitle="How high can you go?"/>
+            <Box className="border-t my-4 mb-6"></Box>
             <ApolloWrapper>
               {children}
             </ApolloWrapper>

@@ -36,7 +36,7 @@ export default function Card({ image, index, isFlipped, isMatched, onClick }
 	return (
 		<Box
 			key={index}
-			className={`card-box border rounded-lg ${isFlipped ? "p-2" : "p-1"} shadow-md flex item-center`}
+			className={`card-box border rounded-lg shadow-md flex item-center`}
 			onClick={() => (!isFlipped && !isMatched) && handleImageClick()}
 		>
 			<Image hidden={!isFlipped} src={`/images/${image}`} alt={image} {...imageProps} />

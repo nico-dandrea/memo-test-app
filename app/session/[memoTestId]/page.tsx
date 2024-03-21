@@ -7,6 +7,7 @@ import { useParams, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import CardGrid from "./CardGrid";
 import EndGameModal from "./EndGameModal";
+import LoadingIndicator from "@/components/LoadingIndicator";
 
 export default function Session() {
 
@@ -15,7 +16,7 @@ export default function Session() {
   const [cards, setCards] = useState<SessionCard[]>([]);
   const [sessionId, setSessionId] = useState<string | null>();
   const [isMatching, setIsMatching] = useState<boolean>(false);
-  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [isCheckingMatch, setIsCheckingMatch] = useState<boolean>(false);
   const [sessionHelper] = useState(() => SessionHelper({ params: { memoTestId } }));
   const [showModal, setShowModal] = useState(false);
 
@@ -31,7 +32,7 @@ export default function Session() {
   };
 
   useEffect(() => {
-    setIsLoading(true);
+    setIsCheckingMatch(true);
     const storedSessionId = sessionHelper.getMemoTestSession();
     const cardsJSONString = sessionHelper.getSessionCards();
     if (!storedSessionId || !cardsJSONString) {
@@ -41,19 +42,16 @@ export default function Session() {
     // @ts-ignore
     const cardsJSON: SessionCard[] = JSON.parse(cardsJSONString);
     setCards(cardsJSON);
-    setIsLoading(false);
+    setIsCheckingMatch(false);
   }, [memoTestId, sessionHelper]);
 
   const handleEndSession = () => {
-    console.log("end session");
     if (cards.every((card) => card.isMatched)) {
-      console.log("all cards matched");
       endGameSession({
         variables: {
           id: sessionId
         }
       });
-      console.log(showModal)
       sessionHelper.endSession();
       setShowModal(true);
     }
@@ -90,17 +88,17 @@ export default function Session() {
 
 
   const handleCardClicked = (index: number) => {
-    if (isLoading) {
+    if (isCheckingMatch) {
       return;
     }
     cards[index].isFlipped = true;
     if (isMatching) {
       handleCardMatching(index);
       handleIncrementSessionRetries();
-      setIsLoading(true);
+      setIsCheckingMatch(true);
       setTimeout(() => {
         handleResetCards();
-        setIsLoading(false);
+        setIsCheckingMatch(false);
         handleEndSession();
       }, 1000);
     } else {
@@ -111,13 +109,20 @@ export default function Session() {
 
   return (
     <>
-      <CardGrid cards={cards} handleCardClicked={handleCardClicked} />
-      <EndGameModal 
-        title="Congratulations!" 
-        isOpen={showModal} 
-        onClose={handleGoHome}
-        description="You've completed the game!"
-      />
+      {!cards.length ? (
+        <LoadingIndicator />
+      ) : (
+
+        <>
+          <CardGrid cards={cards} handleCardClicked={handleCardClicked} />
+          <EndGameModal
+            title="Congratulations!"
+            isOpen={showModal}
+            onClose={handleGoHome}
+            description="You've completed the game!"
+          />
+        </>
+      )}
     </>
   );
 };

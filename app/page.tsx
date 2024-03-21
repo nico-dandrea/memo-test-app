@@ -1,15 +1,15 @@
 "use client"
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, memo } from "react";
 import { useQuery } from '@apollo/client';
 import { FETCH_MEMO_TESTS } from "@/app/apollo/queries";
 import { MemoTest } from "@/types/MemoTest";
 import MemoTestList from "./MemoTestList";
-import Header from "./Header";
 import Box from "@/components/Box";
+import LoadingIndicator from "@/components/LoadingIndicator";
 
 export default function Home() {
-  const { data } = useQuery(FETCH_MEMO_TESTS);
+  const { data, loading } = useQuery(FETCH_MEMO_TESTS);
   const [memoTests, setMemoTests] = useState<MemoTest[]>([]);
 
   useEffect(() => {
@@ -19,9 +19,12 @@ export default function Home() {
   }, [data]);
 
   return (
-    <Box>
-      <Header title="Memo Test" subtitle="How high can you score?" />
-      <MemoTestList memoTests={memoTests} />
-    </Box>
+    loading && !memoTests.length ? (
+      <LoadingIndicator />
+    ) : (
+      <Box>
+        <MemoTestList memoTests={memoTests} />
+      </Box>
+    )
   );
 }

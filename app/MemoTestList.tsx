@@ -42,13 +42,13 @@ const MemoTestList = ({ memoTests }: { memoTests: MemoTest[] }) => {
 	}
 
 	return (
-		<Box>
+		<Box className="flex float-right">
 			<ul className="space-y-4">
 				{memoTests.map(memoTest => (
 					<li key={memoTest.id}>
-						<h2 className="text-2xl font-bold">{memoTest.name}</h2>
-						<p className="text-gray-600 mb-2">Max Score: {memoTest.maxScore ? memoTest.maxScore.score : 0}</p>
-						<Box>
+						<h2 className="text-2xl font-bold text-center">{memoTest.name}</h2>
+						<p className="text-pink-600 mb-2 text-center">Max Score: {memoTest.maxScore ? memoTest.maxScore.score : 0}</p>
+						<Box className="space-x-4">
 							<Button
 								className="bg-pink-600 hover:bg-pink-700"
 								onClick={() => createGameSession({
