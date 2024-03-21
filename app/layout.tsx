@@ -1,6 +1,9 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
+import { ApolloWrapper } from "@/app/ApolloWrapper";
+import Box from "@/components/Box";
+import Link from "next/link";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -16,7 +19,15 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={inter.className}>{children}</body>
+      <body className={inter.className}>
+        <section className="flex h-screen bg-gradient-to-b from-yellow-200 to-yellow-300 justify-center items-center">
+          <Box className="w-2/4 bg-white p-8 rounded-lg shadow-lg flex text-pink-600">
+            <ApolloWrapper>
+              {children}
+            </ApolloWrapper>
+          </Box>
+        </section>
+      </body>
     </html>
   );
 }
