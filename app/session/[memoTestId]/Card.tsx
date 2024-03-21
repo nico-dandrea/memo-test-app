@@ -1,6 +1,6 @@
 import Image from "next/image";
 import "./card.css";
-import Box from "@/components/Box";
+import Box from "../../../components/Box";
 
 const CardBack = ({ cardNumber, cardBackUrl, props, isFlipped }: { cardNumber: number, cardBackUrl: string, props: any, isFlipped: boolean }) => (
 	<Box hidden={isFlipped} className="relative">
